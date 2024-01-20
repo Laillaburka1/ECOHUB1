@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desert Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://cdn.dribbble.com/userupload/3363030/file/original-f40ca68d38b9dc26d43637b94e979fdc.png?resize=1504x1128');
+            background-size: cover;
+            font-family: 'League Spartan', Arial, sans-serif;
+        }
+
+        #header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #chat-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #search-bar-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #search-bar {
+            flex: 1;
+            width: calc(100% - 40px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        #submit-btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #chat-bot-messages {
+            overflow-y: scroll;
+            max-height: 300px;
+            margin-bottom: 10px;
+        }
+
+        .message-container {
+            margin-bottom: 20px;
+        }
+
+        #user-message {
+            color: blue;
+        }
+
+        #bot-message {
+            color: green;
+            font-size: 18px;
+        }
+
+        #bot-message img {
+            max-width: 20px;
+            max-height: 20px;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        #explore-btn {
+            background-color: #FFD230;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #audio-player {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">DESERT</div>
+
+    <div id="chat-container">
+        <div id="search-bar-container">
+            <input type="text" id="search-bar" placeholder="Ask me anything about Deserts">
+            <button id="submit-btn" onclick="submitQuestion()">➔</button>
+        </div>
+        <div id="chat-bot">
+            <div id="chat-bot-messages"></div>
+        </div>
+        <button id="explore-btn" onclick="exploreOtherEcosystems()">Explore other ecosystems</button>
+
+        <div id="audio-player"></div>
+
+        <script>
+
+            function createYouTubePlayer() {
+                const playerContainer = document.getElementById('audio-player');
+
+                if (!playerContainer.querySelector('iframe')) {
+                    const iframe = document.createElement('iframe');
+                    iframe.setAttribute('src', 'https://www.youtube.com/embed/Yy7IIYaq1Ww?autoplay=1&controls=0&showinfo=0&autohide=1&volume=10');
+                    iframe.setAttribute('frameborder', '0');
+                    iframe.setAttribute('allow', 'autoplay');
+                    playerContainer.appendChild(iframe);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchBar = document.getElementById('search-bar');
+                const chatBotMessages = document.getElementById('chat-bot-messages');
+
+                window.submitQuestion = function() {
+                    const userMessage = searchBar.value;
+                    displayMessage(userMessage, 'user-message');
+
+                    const botResponse = getBotResponse(userMessage);
+                    displayMessage(botResponse.message, 'bot-message');
+
+                    searchBar.value = '';
+                    chatBotMessages.scrollTop = chatBotMessages.scrollHeight;
+                };
+
+                window.exploreOtherEcosystems = function() {
+                    window.location.href = 'index.html';
+                };
+
+                function displayMessage(message, className) {
+                    const messageContainer = document.createElement('div');
+                    messageContainer.className = 'message-container';
+
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = className;
+                    messageDiv.innerHTML = message;
+                    messageContainer.appendChild(messageDiv);
+
+                    chatBotMessages.appendChild(messageContainer);
+
+                    createYouTubePlayer();
+                }
+
+                function getBotResponse(userMessage) {
+                    const responses = {
+                        'desert': { message: 'You can contribute to desert conservation in various ways:<br><br>1. Support organizations dedicated to desert conservation through donations.<br>2. Educate others about the unique challenges faced by desert ecosystems.<br>3. Practice responsible tourism in desert areas, respecting local ecosystems.<br>4. Get involved in community-led initiatives focused on desert preservation.<br>5. Adopt water-efficient practices in your daily life to support desert ecosystems.<br>6. Participate in clean-up events to help maintain the cleanliness of desert environments.<br>7. Advocate for sustainable development practices that prioritize desert conservation.' },
+                      'help': { message: 'Deserts are arid ecosystems characterized by low precipitation levels and often extreme temperatures. They cover a significant portion of the Earth\'s surface and exhibit unique adaptations in both flora and fauna to survive in harsh conditions.' },
+                        'climate': { message: 'Deserts typically have a dry climate with low annual precipitation. Temperature extremes are common, with hot days and cool nights. The lack of moisture contributes to the unique features and challenges faced by desert ecosystems.' },
+                        'wildlife': { message: 'Desert wildlife has adapted to the challenges of arid environments. Species such as camels, rattlesnakes, and fennec foxes have evolved special adaptations to conserve water and thrive in the extreme conditions of deserts.' },
+                        'plants': { message: 'Desert plants are well-adapted to conserve water and withstand high temperatures. Examples include cacti, succulents, and drought-resistant shrubs. Many desert plants have specialized features like reduced leaves or water-storing tissues.' },
+                        'sand dunes': { message: 'Sand dunes are common features in deserts, shaped by wind-blown sand. They can vary in size and form intricate patterns. Some desert ecosystems have vast stretches of sand dunes, creating a visually striking landscape.' },
+                        'oasis': { message: 'Oases are areas in deserts with water sources, often forming lush and fertile spots amidst arid surroundings. These locations provide essential resources for both wildlife and human populations in desert regions.' },
+                        'adaptations': { message: 'Plants and animals in deserts showcase remarkable adaptations to survive. Examples include the ability to store water, nocturnal behavior to avoid daytime heat, and specialized physiological mechanisms to thrive in low-moisture environments.' },
+                        'biodiversity': { message: 'Desert ecosystems exhibit biodiversity with a variety of species uniquely adapted to arid conditions. Despite the harsh environment, deserts support a range of flora and fauna, each playing a crucial role in the delicate balance of the ecosystem.' },
+                        'human impact': { message: 'Human activities can impact desert ecosystems through factors such as urbanization, agriculture, and resource extraction. Sustainable practices and conservation efforts are important to minimize the ecological footprint on desert environments.' },
+                        'desertification': { message: 'Desertification is the process by which fertile land becomes increasingly arid and unproductive. It is often exacerbated by human activities, climate change, and unsustainable land use practices. Combatting desertification requires conservation measures and sustainable land management.' },
+                        'desert exploration': { message: 'Exploring deserts unveils the beauty of unique landscapes and the resilience of life in extreme conditions. Scientists study desert ecosystems to understand adaptations, biodiversity, and the ecological dynamics that shape these arid environments.' },
+                        'extreme conditions': { message: 'Deserts are known for their extreme conditions, including high temperatures, low precipitation, and vast arid landscapes. These conditions present challenges and opportunities for the plants, animals, and people who call deserts home.' },
+                        'important': { message: 'Desert ecosystems play a vital role in maintaining global biodiversity and ecological balance. Their unique adaptations and survival strategies contribute valuable insights into how life thrives in extreme environments.' },
+                        'research': { message: 'Ongoing research in desert ecosystems focuses on understanding the adaptations of desert flora and fauna, the impact of climate change, and the conservation of unique species. Scientific studies contribute to our knowledge of arid environments.' },
+                        'examples of plants': { message: 'An example of a plant would be drought-tolerant plants in deserts have evolved to survive with limited water availability. Their adaptations include deep root systems, water-storing tissues, and reduced leaf surfaces to minimize water loss. These plants play a crucial role in desert ecosystems.' }
+                    };
+
+                    for (const keyword in responses) {
+                        if (userMessage.toLowerCase().includes(keyword)) {
+                            return responses[keyword];
+                        }
+                    }
+
+                    return { message: "I'm sorry, I don't have information about that. Ask me something else about Deserts." };
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

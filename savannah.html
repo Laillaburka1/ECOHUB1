@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savannah Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'League Spartan', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        video {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        #header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #chat-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #search-bar-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #search-bar {
+            flex: 1;
+            width: calc(100% - 40px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        #submit-btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #chat-bot-messages {
+            overflow-y: scroll;
+            max-height: 300px;
+            margin-bottom: 10px;
+        }
+
+        .message-container {
+            margin-bottom: 20px;
+        }
+
+        #user-message {
+            color: blue;
+        }
+
+        #bot-message {
+            color: green;
+            font-size: 18px;
+        }
+
+        #bot-message img {
+            max-width: 20px;
+            max-height: 20px;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        #explore-btn {
+            background-color: #FFA500;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video autoplay loop muted playsinline>
+            <source src="https://cdn.dribbble.com/userupload/3827976/file/original-d11a2619979c5ea69aa394f1f8bf3391.mp4" type="video/mp4"> 
+        </video>
+    </div>
+
+    <div id="header">SAVANNAH</div>
+
+    <div id="chat-container">
+        <div id="search-bar-container">
+            <input type="text" id="search-bar" placeholder="Ask me anything about Savannah">
+            <button id="submit-btn" onclick="submitQuestion()">➔</button>
+        </div>
+        <div id="chat-bot">
+            <div id="chat-bot-messages"></div>
+        </div>
+        <button id="explore-btn" onclick="exploreOtherEcosystems()">Explore other ecosystems</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchBar = document.getElementById('search-bar');
+            const chatBotMessages = document.getElementById('chat-bot-messages');
+
+            window.submitQuestion = function() {
+                const userMessage = searchBar.value;
+                displayMessage(userMessage, 'user-message');
+
+                const botResponse = getBotResponse(userMessage);
+                displayMessage(botResponse.message, 'bot-message');
+
+                searchBar.value = '';
+                chatBotMessages.scrollTop = chatBotMessages.scrollHeight;
+            };
+
+            window.exploreOtherEcosystems = function() {
+                window.location.href = 'index.html';
+            };
+
+            function displayMessage(message, className) {
+                const messageContainer = document.createElement('div');
+                messageContainer.className = 'message-container';
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = className;
+                messageDiv.innerHTML = message;
+                messageContainer.appendChild(messageDiv);
+
+                chatBotMessages.appendChild(messageContainer);
+            }
+
+            function getBotResponse(userMessage) {
+                const responses = {
+                    'savannah': { message: 'Savannahs are tropical grasslands characterized by a mix of grasses and scattered trees. They are home to diverse wildlife adapted to open landscapes.' },
+                    'climate': { message: 'Savannahs typically have a tropical climate with distinct wet and dry seasons. The temperature is warm to hot throughout the year, and rainfall varies.' },
+                    'wildlife': { message: 'Savannahs support a rich variety of wildlife, including iconic species like lions, elephants, giraffes, and zebras. These animals have adapted to the open terrain of the savannah.' },
+                    'plants': { message: 'Savannahs are often referred to as tropical grasslands. The vegetation is dominated by grasses, and trees are scattered across the landscape.' },
+                    'adaptations': { message: 'Animals in the savannah have unique adaptations. For example, lions have keen hunting instincts, elephants have long trunks for reaching food and water, and giraffes have long necks to feed on tall trees.' },
+                    'biodiversity': { message: 'Savannahs exhibit high biodiversity with a variety of plant and animal species. The coexistence of herbivores and carnivores contributes to the dynamic balance of the ecosystem.' },
+                    'human impact': { message: 'Human activities, such as agriculture and urbanization, can impact savannah ecosystems. Conservation efforts are crucial to protect the biodiversity and ecological balance of these regions.' },
+                    'regions': { message: 'Savannahs are found in various regions around the world, including Africa, South America, Australia, and Asia. Each region has unique characteristics and species adapted to local conditions.' },
+                    'seasons': { message: 'Savannahs experience distinct seasonal changes with wet and dry seasons. During the wet season, vegetation flourishes, and animals thrive. The dry season presents challenges, and some species migrate in search of water and food.' },
+                    'migration': { message: 'Migration is a common behavior among animals in the savannah, especially during the dry season. Wildebeests, for example, embark on long migrations in search of water and fresh grazing areas.' },
+                    'threatened species': { message: 'Certain species in the savannah are considered threatened due to habitat loss, poaching, and other factors. Conservation initiatives aim to protect these species and their natural habitats.' },
+                    'explore': { message: 'Exploring savannah ecosystems provides insights into the interconnectedness of species and the challenges they face. Researchers study savannahs to advance conservation efforts and promote sustainable practices.' },
+                    'fire': { message: 'Fire plays a role in the ecology of savannahs. Natural fires can benefit the ecosystem by promoting new growth, controlling vegetation, and maintaining a balance between grasses and trees.' },
+                    'important': { message: 'Savannah ecosystems are essential for biodiversity and play a key role in maintaining ecological balance. The interactions between plants, herbivores, and carnivores contribute to the resilience of the savannah.' },
+                    'help': { message: 'Contributing to the conservation of savannah ecosystems is essential. Here are some ways you can help:<br><br>1. Support wildlife conservation organizations working in savannah regions.<br>2. Participate in or organize tree planting initiatives to combat deforestation.<br>3. Raise awareness about the importance of preserving savannah habitats and biodiversity.<br>4. Practice responsible tourism to minimize the impact on savannah ecosystems.<br>5. Support sustainable agricultural practices that minimize habitat disruption.<br>6. Engage in community-based conservation projects to address local environmental issues.<br>7. Educate others about the unique flora and fauna in savannah ecosystems and the threats they face.' },
+                    'research': { message: 'Ongoing research in savannah ecosystems focuses on wildlife conservation, habitat management, and understanding the impact of climate change. Scientists use various methods, including satellite technology and field studies, to gather data.' }
+                };
+
+                for (const keyword in responses) {
+                    if (userMessage.toLowerCase().includes(keyword)) {
+                        return responses[keyword];
+                    }
+                }
+
+                return { message: "I'm sorry, I don't have information about that. Ask me something else about Savannah." };
+            }
+        });
+    </script>
+</body>
+</html>

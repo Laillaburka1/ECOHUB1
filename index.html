@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Cosmic Octo', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #top-section {
+            background-color: white;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: left;
+            min-height: 500px;
+            position: relative;
+            margin-top: -0.45%;
+        }
+
+        #green-box {
+            width: 160px;
+            height: 50px;
+            background-color: #89A48B;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #green-text {
+            color: white;
+            font-weight: bold;
+        }
+
+        #title {
+            font-size: 70px;
+            color: #89A48B;
+            font-weight: bold;
+            margin: 20px;
+        }
+
+        #top-section h2 {
+            font-size: 70px;
+            color: #89A48B;
+            font-weight: bold;
+            margin: 150px 0 10px;
+            text-align: center;
+        }
+
+        #top-section p {
+            text-align: center;
+        }
+
+        #get-started-btn {
+            background-color: #89A48B;
+            color: white;
+            padding: 15px 30px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+        }
+
+        #scroll-down {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #89A48B;
+            cursor: pointer;
+        }
+
+        .cube {
+            width: 250px;
+            height: 250px;
+            background-size: cover;
+            border-radius: 20px;
+            margin: 20px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .cube:hover {
+            transform: scale(1.1);
+        }
+
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .cube:hover .overlay-text {
+            opacity: 1;
+        }
+
+        .cube-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #cube-container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        #second-section {
+            background-image: url('IMG_2877.jpg');
+            background-size: cover;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        #white-background {
+            background-color: white;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #stylish-element {
+            font-size: 30px;
+            color: #E07E22;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        #footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+    <title>ECOHUB Website</title>
+</head>
+<body>
+    <div id="top-section">
+        <div id="green-box">
+            <span id="green-text">ECOHUB</span>
+        </div>
+
+        <h2>Welcome to ECOHUB</h2>
+        <p>Embark on a journey to explore the captivating beauty of diverse ecosystems. Learn how every individual can make a positive impact on our planet. Discover actionable ways to protect endangered species and contribute to building a sustainable future for generations to come.</p>
+
+        <button id="get-started-btn">Get Started</button>
+        <div class="popup">
+            <p>Explore the ecosystems below.</p>
+        </div>
+        <div class="overlay"></div>
+    </div>
+
+    <div id="second-section">
+        <div id="title">ECOSYSTEMS</div>
+
+        <div id="cube-container">
+            <a href="rainforest.html" class="cube-link">
+                <div class="cube" style="background-image: url('IMG_2881.jpg')">
+                    <div class="overlay-text" style="color: #32620E;">Rainforest </div>
+                </div>
+            </a>
+            <a href="savannah.html" class="cube-link">
+                <div class="cube" style="background-image: url('IMG_2879.jpg')">
+                    <div class="overlay-text" style="color: #C67C30;">Savannah</div>
+                </div>
+            </a>
+            <a href="coralreef.html" class="cube-link">
+                <div class="cube" style="background-image: url('IMG_2874.jpg')">
+                    <div class="overlay-text" style="color: #145DA0;">Coral Reef </div>
+                </div>
+            </a>
+        </div>
+
+        <div id="cube-container">
+            <a href="tundra.html" class="cube-link">
+                <div class="cube" style="background-image: url('IMG_2880.jpg')">
+                    <div class="overlay-text" style="color: #FFFFFF;">Tundra </div>
+                </div>
+            </a>
+            <a href="desert.html" class="cube-link">
+                <div class="cube" style="background-image: url('IMG_2878.jpg')">
+                    <div class="overlay-text" style="color: #E4DD7E;">Desert </div>
+                </div>
+            </a>
+        </div>
+
+    <div id="white-background">
+        <h2>About ECOHUB</h2>
+        <p>ECOHUB is your ultimate guide to understanding and appreciating the intricate balance of ecosystems. Dive deep into the importance of preserving biodiversity, and explore how you can play a vital role in conservation efforts.</p>
+        <p>Our mission is to empower individuals with knowledge, inspire a sense of responsibility, and provide practical steps to protect endangered species. Join us in creating a sustainable and harmonious coexistence with nature.</p>
+    </div>
+
+    <div id="footer">
+        &copy; 2024 ECOHUB. All Rights Reserved.
+    </div>
+
+    <script>
+        var getStartedBtn = document.getElementById("get-started-btn");
+        var popup = document.querySelector(".popup");
+        var overlay = document.querySelector(".overlay");
+
+        getStartedBtn.addEventListener("click", function () {
+            popup.style.display = "block";
+            overlay.style.display = "block";
+        });
+
+        overlay.addEventListener("click", function () {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+        });
+    </script>
+</body>
+</html>

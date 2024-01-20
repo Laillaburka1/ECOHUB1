@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tundra Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://cdn.dribbble.com/userupload/3363011/file/original-c9e1778f119164e12de2c359dcfc90d8.png?compress=1&resize=1200x900');
+            background-size: cover;
+            font-family: 'League Spartan', Arial, sans-serif;
+        }
+
+        #header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #chat-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #search-bar-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #search-bar {
+            flex: 1;
+            width: calc(100% - 40px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        #submit-btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #chat-bot-messages {
+            overflow-y: scroll;
+            max-height: 300px;
+            margin-bottom: 10px;
+        }
+
+        .message-container {
+            margin-bottom: 20px;
+        }
+
+        #user-message {
+            color: blue;
+        }
+
+        #bot-message {
+            color: green;
+            font-size: 18px;
+        }
+
+        #bot-message img {
+            max-width: 20px;
+            max-height: 20px;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        #explore-btn {
+            background-color: #BFC9F6;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #audio-player {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">TUNDRA</div>
+
+    <div id="chat-container">
+        <div id="search-bar-container">
+            <input type="text" id="search-bar" placeholder="Ask me anything about Tundras">
+            <button id="submit-btn" onclick="submitQuestion()">➔</button>
+        </div>
+        <div id="chat-bot">
+            <div id="chat-bot-messages"></div>
+        </div>
+        <button id="explore-btn" onclick="exploreOtherEcosystems()">Explore other ecosystems</button>
+
+        <div id="audio-player"></div>
+
+        <script>
+
+            function createYouTubePlayer() {
+                const playerContainer = document.getElementById('audio-player');
+
+
+                if (!playerContainer.querySelector('iframe')) {
+                    const iframe = document.createElement('iframe');
+                    iframe.setAttribute('src', 'https://www.youtube.com/embed/PhJNptrpJEE?autoplay=1&controls=0&showinfo=0&autohide=1&volume=10');
+                    iframe.setAttribute('frameborder', '0');
+                    iframe.setAttribute('allow', 'autoplay');
+                    playerContainer.appendChild(iframe);
+                }
+            }
+
+            function submitQuestion() {
+                const searchBar = document.getElementById('search-bar');
+                const chatBotMessages = document.getElementById('chat-bot-messages');
+
+                const userMessage = searchBar.value;
+                displayMessage(userMessage, 'user-message');
+
+                const botResponse = getBotResponse(userMessage);
+                displayMessage(botResponse.message, 'bot-message');
+
+                searchBar.value = '';
+                chatBotMessages.scrollTop = chatBotMessages.scrollHeight;
+            }
+
+            function exploreOtherEcosystems() {
+                window.location.href = 'index.html';
+            }
+
+            function displayMessage(message, className) {
+                const messageContainer = document.createElement('div');
+                messageContainer.className = 'message-container';
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = className;
+                messageDiv.innerHTML = message;
+                messageContainer.appendChild(messageDiv);
+
+                const chatBotMessages = document.getElementById('chat-bot-messages');
+                chatBotMessages.appendChild(messageContainer);
+
+                createYouTubePlayer();
+            }
+
+            function getBotResponse(userMessage) {
+                const responses = {
+                    'tundra': { message: 'Tundras are cold ecosystems with unique flora and fauna. They are characterized by low temperatures, short growing seasons, and permafrost, which is a layer of permanently frozen ground. Despite the harsh conditions, tundras support a variety of plant and animal life adapted to the cold environment.' },
+                    'climate': { message: 'Tundras generally have a cold and dry climate. The temperatures in tundra regions are often below freezing, and precipitation is limited. The cold climate contributes to the formation of permafrost, which has a significant impact on the landscape and ecosystem.' },
+                    'wildlife': { message: 'Tundras are home to various wildlife species adapted to cold conditions. Iconic animals such as the Arctic fox, reindeer, and polar bear are found in tundra regions. These animals have special adaptations that help them survive in the challenging tundra environment.' },
+                    'plants': { message: 'The vegetation in tundras includes mosses, lichens, and small shrubs. Due to the short growing season and nutrient-poor soil, tundra plants have adapted to survive with limited resources. The unique plant life contributes to the overall biodiversity of tundra ecosystems.' },
+                    'permafrost': { message: 'Permafrost is a characteristic of tundra regions, where the soil remains frozen year-round. This frozen layer has a significant impact on the landscape, affecting water drainage, plant growth, and the stability of the ground. Permafrost is a key feature of tundra ecosystems.' },
+                    'arctic': { message: 'Tundras are often found in the Arctic region, characterized by low temperatures and short growing seasons. The Arctic tundra is one of the Earth\'s major biomes, and it plays a crucial role in global climate regulation. The unique conditions of the Arctic tundra support a range of specialized plant and animal species.' },
+                    'help': { message: 'Sure! Here are some ways you can help:<br><br>1. Support conservation organizations working to protect tundra ecosystems.<br>2. Raise awareness about the importance of preserving tundra environments.<br>3. Make environmentally conscious choices in your daily life to reduce your ecological footprint.<br>4. Participate in local clean-up events and initiatives.<br>5. Educate others about the unique challenges faced by tundra ecosystems.' },
+                    'adaptations': { message: 'Animals in tundras have various adaptations to survive the harsh conditions. For example, the Arctic fox has a thick fur coat and small ears to conserve heat, while the polar bear has a layer of blubber for insulation. Plants often have low-growing structures to avoid the strong winds and retain heat close to the ground.' },
+                    'biodiversity': { message: 'Tundras may seem barren, but they have a unique biodiversity. The extreme conditions have led to specialized adaptations in both plants and animals. Despite the short growing season, tundra ecosystems play a vital role in the global ecosystem and climate regulation.' },
+                    'human impact': { message: 'Human activities can impact tundra ecosystems. Climate change, pollution, and habitat destruction pose threats to tundra environments. It\'s important to address these issues through conservation efforts and sustainable practices to preserve the delicate balance of tundra ecosystems.' },
+                    'regions': { message: 'Tundra regions are found in both the Arctic and alpine environments. Arctic tundras are located near the North Pole, while alpine tundras are found in high mountain regions. These regions share similarities in terms of cold temperatures, permafrost, and unique plant and animal life.' },
+                    'seasonal changes': { message: 'Tundras experience distinct seasonal changes. Winters are long and harsh, with temperatures dropping significantly. The short summer season brings a burst of life as plants bloom, and animals take advantage of the brief period of warmth. The seasonal changes are crucial for the survival of tundra organisms.' },
+                    'migration': { message: 'Migration is a common strategy for animals in tundra regions. Many species, such as caribou and certain bird species, migrate to find food and suitable breeding grounds. Migration allows these animals to adapt to the seasonal changes and make the most of available resources.' },
+                    'threatened species': { message: 'Some species in tundra ecosystems are considered threatened due to various factors. Climate change, habitat loss, and human activities can contribute to the decline of certain tundra species. Conservation efforts are essential to protect these vulnerable species.' },
+                    'tundra exploration': { message: 'Exploring tundra ecosystems can be a fascinating adventure. Scientists and researchers study tundras to understand their unique characteristics and the impact of climate change. Tundra exploration contributes valuable insights into biodiversity, ecology, and environmental changes.' },
+                    'extreme conditions': { message: 'Tundras are known for their extreme conditions, including low temperatures, strong winds, and permafrost. These conditions present challenges for both plant and animal life, leading to specialized adaptations that allow organisms to thrive in the harsh tundra environment.' },
+                    'important': { message: 'Tundra ecosystems play a crucial role in the Earth\'s balance. They contribute to climate regulation, support biodiversity, and serve as habitats for unique species. Understanding the importance of tundras is essential for conservation efforts and sustainable environmental practices.' },
+                    'research': { message: 'Ongoing research in tundra ecosystems focuses on climate change impacts, biodiversity studies, and conservation strategies. Scientists use various tools and methods, including remote sensing and on-site observations, to gather data and monitor changes in tundra environments.' },
+                    'reindeer adaptations': { message: 'Reindeer, also known as caribou in North America, have remarkable adaptations for life in tundras. Their hooves are concave, providing traction on snow and ice. Additionally, reindeer have a thick fur coat and specialized nasal structures that help regulate body temperature in cold conditions.' }
+                };
+
+                for (const keyword in responses) {
+                    if (userMessage.toLowerCase().includes(keyword)) {
+                        return responses[keyword];
+                    }
+                }
+
+                return { message: "I'm sorry, I don't have information about that. Ask me something else about Tundras." };
+            }
+        </script>
+    </div>
+</body>
+
+</html>

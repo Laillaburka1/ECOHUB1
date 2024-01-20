@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coral Reef Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://cdn.dribbble.com/userupload/3363005/file/original-5ad735dc49a4aea85edbb0b84fcc7794.png?resize=1504x1128');
+            background-size: cover;
+            font-family: 'League Spartan', Arial, sans-serif;
+        }
+
+        #header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #chat-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #search-bar-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #search-bar {
+            flex: 1;
+            width: calc(100% - 40px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        #submit-btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #chat-bot-messages {
+            overflow-y: scroll;
+            max-height: 300px;
+            margin-bottom: 10px;
+        }
+
+        .message-container {
+            margin-bottom: 20px;
+        }
+
+        #user-message {
+            color: blue;
+        }
+
+        #bot-message {
+            color: green;
+            font-size: 18px;
+        }
+
+        #bot-message img {
+            max-width: 20px;
+            max-height: 20px;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        #explore-btn {
+            background-color: #145DA0;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #audio-player {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">CORAL REEF</div>
+
+    <div id="chat-container">
+        <div id="search-bar-container">
+            <input type="text" id="search-bar" placeholder="Ask me anything about Coral Reefs">
+            <button id="submit-btn" onclick="submitQuestion()">➔</button>
+        </div>
+        <div id="chat-bot">
+            <div id="chat-bot-messages"></div>
+        </div>
+        <button id="explore-btn" onclick="exploreOtherEcosystems()">Explore other ecosystems</button>
+
+        <div id="audio-player"></div>
+
+        <script>
+            function createYouTubePlayer() {
+                const playerContainer = document.getElementById('audio-player');
+
+                if (!playerContainer.querySelector('iframe')) {
+                    const iframe = document.createElement('iframe');
+                    iframe.setAttribute('src', 'https://www.youtube.com/embed/bhyUt74kohA?autoplay=1&controls=0&showinfo=0&autohide=1&volume=10');
+                    iframe.setAttribute('frameborder', '0');
+                    iframe.setAttribute('allow', 'autoplay');
+                    playerContainer.appendChild(iframe);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchBar = document.getElementById('search-bar');
+                const chatBotMessages = document.getElementById('chat-bot-messages');
+
+                window.submitQuestion = function() {
+                    const userMessage = searchBar.value;
+                    displayMessage(userMessage, 'user-message');
+
+                    const botResponse = getBotResponse(userMessage);
+                    displayMessage(botResponse.message, 'bot-message');
+
+                    searchBar.value = '';
+                    chatBotMessages.scrollTop = chatBotMessages.scrollHeight;
+                };
+
+                window.exploreOtherEcosystems = function() {
+                    window.location.href = 'index.html';
+                };
+
+                function displayMessage(message, className) {
+                    const messageContainer = document.createElement('div');
+                    messageContainer.className = 'message-container';
+
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = className;
+                    messageDiv.innerHTML = message;
+                    messageContainer.appendChild(messageDiv);
+
+                    chatBotMessages.appendChild(messageContainer);
+
+                    createYouTubePlayer();
+                }
+
+                function getBotResponse(userMessage) {
+                    const responses = {
+                        'coral reef': { message: 'Coral reefs are diverse underwater ecosystems formed by colonies of coral polyps. They are known for their vibrant colors, rich biodiversity, and crucial role in supporting marine life.' },
+                        'climate': { message: 'Coral reefs thrive in warm tropical waters with a narrow temperature range. They are sensitive to changes in water temperature, and factors like coral bleaching can occur when temperatures rise beyond the normal range.' },
+                        'marine life': { message: 'Coral reefs support a vast array of marine life, including various species of fish, invertebrates, and plants. The intricate structure of coral provides habitats for numerous organisms, contributing to the incredible biodiversity of coral reef ecosystems.' },
+                        'coral species': { message: 'There are different species of coral that contribute to the formation of coral reefs. Hard corals, soft corals, and branching corals are examples of coral species that build the intricate calcium carbonate structures seen in coral reef formations.' },
+                        'bleaching': { message: 'Coral bleaching occurs when coral polyps expel the symbiotic algae living in their tissues, causing the coral to turn white. This phenomenon is often associated with environmental stress, such as increased water temperatures. Coral reefs can recover if conditions improve.' },
+                        'conservation': { message: 'Conservation efforts are crucial for protecting coral reefs from threats such as pollution, overfishing, and climate change. Sustainable practices, marine protected areas, and public awareness play key roles in preserving the health and diversity of coral reef ecosystems.' },
+                        'restoration': { message: 'Coral restoration involves initiatives to restore damaged coral reefs. Techniques include coral transplantation, where healthy coral fragments are transplanted to degraded areas, and coral farming, which involves cultivating coral fragments in nurseries for later transplantation.' },
+                        'threats': { message: 'Coral reefs face various threats, including coral diseases, overfishing, pollution from runoff and plastics, and the impacts of climate change. Addressing these threats is essential to ensure the resilience and survival of coral reef ecosystems.' },
+                        'research': { message: 'Ongoing research in coral reef ecosystems focuses on understanding the complex interactions between corals, marine life, and the environment. Scientists use tools such as underwater surveys, satellite imagery, and genetic studies to gather data and monitor the health of coral reefs.' },
+                        'important': { message: 'Coral reefs are of great ecological importance. They provide habitat for marine species, protect coastlines from erosion, and contribute to fisheries. Additionally, coral reefs have cultural significance and attract tourists, supporting local economies in coastal regions.' },
+                        'health': { message: 'The health of coral reefs is an indicator of overall ocean health. Coral reefs are sensitive to changes in water quality, temperature, and acidity. Protecting coral reefs contributes to the well-being of marine ecosystems and the conservation of biodiversity.' },
+                        'explore': { message: 'Exploring coral reefs offers a glimpse into the beauty and complexity of underwater ecosystems. Scientists and divers study coral reefs to document species, assess coral health, and understand the factors influencing reef dynamics. Reef exploration is vital for conservation efforts and marine science.' },
+                        'adaptations': { message: 'Corals have unique adaptations for survival in their underwater environment. The symbiotic relationship with algae provides corals with nutrients through photosynthesis. Additionally, the calcium carbonate skeletons secreted by corals contribute to the formation of reef structures.' },
+                        'coral species diversity': { message: 'Coral reefs exhibit high species diversity, with thousands of species of corals, fish, mollusks, and other invertebrates. The intricate and interconnected nature of coral reef ecosystems creates a mosaic of habitats, each supporting specific species adapted to their niche.' },
+                        'threatened species': { message: 'Some species dependent on coral reefs are considered threatened due to reef degradation. Conservation efforts aim to protect endangered species, preserve coral habitats, and address the underlying factors contributing to the decline of coral reef ecosystems.' },
+                        'reef': { message: 'Coral reefs have a remarkable ability to recover and adapt to environmental changes. Resilience is influenced by factors such as coral diversity, water quality, and community engagement. Supporting initiatives that enhance reef resilience is crucial for their long-term survival.' },
+                        'How can I help restore the reef': { message: 'Various techniques are employed in coral reef restoration, including coral transplantation, artificial reef structures, and the reduction of local stressors. These techniques aim to enhance coral growth, support biodiversity, and contribute to the overall recovery of damaged reef ecosystems.' },
+                        'help': { message: 'Helping coral reefs is crucial for their survival. Here are some ways you can contribute:<br><br>1. Support marine conservation organizations focused on coral reef protection.<br>2. Choose sustainable seafood options to reduce the impact on marine ecosystems.<br>3. Practice responsible snorkeling and diving to avoid damaging coral formations.<br>4. Reduce carbon footprint by making eco-friendly choices and supporting clean energy.<br>5. Participate in beach clean-ups to prevent pollution that affects coral reefs.<br>6. Educate others about the importance of coral reefs and the threats they face.<br>7. Advocate for policies that promote coral reef conservation and sustainable fisheries.' },
+                        'ocean conservation': { message: 'Coral reefs are integral to ocean conservation efforts. Protecting coral reefs involves addressing global issues such as climate change and local challenges like overfishing. Collaboration between communities, governments, and organizations is essential for the sustainable management of coral reef resources.' }
+                    };
+
+                    for (const keyword in responses) {
+                        if (userMessage.toLowerCase().includes(keyword)) {
+                            return responses[keyword];
+                        }
+                    }
+
+                    return { message: "I'm sorry, I don't have information about that. Ask me something else about Coral Reefs." };
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

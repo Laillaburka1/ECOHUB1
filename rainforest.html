@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainforest Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('https://cdn.dribbble.com/userupload/3363009/file/original-d7395d88c0d48d935b499ecf95f9236b.png?resize=1504x1128'); 
+            background-size: cover;
+            font-family: 'League Spartan', Arial, sans-serif;
+        }
+
+        #header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #chat-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #search-bar-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #search-bar {
+            flex: 1;
+            width: calc(100% - 40px);
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        #submit-btn {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #chat-bot-messages {
+            overflow-y: scroll;
+            max-height: 300px;
+            margin-bottom: 10px;
+        }
+
+        .message-container {
+            margin-bottom: 20px;
+        }
+
+        #user-message {
+            color: blue;
+        }
+
+        #bot-message {
+            color: green;
+            font-size: 18px;
+        }
+
+        #bot-message img {
+            max-width: 20px;
+            max-height: 20px;
+            border-radius: 8px;
+            margin-top: 5px;
+        }
+
+        #explore-btn {
+            background-color: #68902B;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        #audio-player {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">RAINFOREST</div>
+
+    <div id="chat-container">
+        <div id="search-bar-container">
+            <input type="text" id="search-bar" placeholder="Ask me anything about Rainforests">
+            <button id="submit-btn" onclick="submitQuestion()">➔</button>
+        </div>
+        <div id="chat-bot">
+            <div id="chat-bot-messages"></div>
+        </div>
+        <button id="explore-btn" onclick="exploreOtherEcosystems()">Explore other ecosystems</button>
+
+        <div id="audio-player"></div>
+
+        <script>
+            function createYouTubePlayer() {
+                const playerContainer = document.getElementById('audio-player');
+
+                if (!playerContainer.querySelector('iframe')) {
+                    const iframe = document.createElement('iframe');
+                    iframe.setAttribute('src', 'https://www.youtube.com/embed/czQgEYSs5og?autoplay=1&controls=0&showinfo=0&autohide=1&volume=10');
+                    iframe.setAttribute('frameborder', '0');
+                    iframe.setAttribute('allow', 'autoplay');
+                    playerContainer.appendChild(iframe);
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchBar = document.getElementById('search-bar');
+                const chatBotMessages = document.getElementById('chat-bot-messages');
+
+                window.submitQuestion = function() {
+                    const userMessage = searchBar.value;
+                    displayMessage(userMessage, 'user-message');
+
+                    const botResponse = getBotResponse(userMessage);
+                    displayMessage(botResponse.message, 'bot-message');
+
+                    searchBar.value = '';
+                    chatBotMessages.scrollTop = chatBotMessages.scrollHeight;
+                };
+
+                window.exploreOtherEcosystems = function() {
+                    window.location.href = 'index.html';
+                };
+
+                function displayMessage(message, className) {
+                    const messageContainer = document.createElement('div');
+                    messageContainer.className = 'message-container';
+
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = className;
+                    messageDiv.innerHTML = message;
+                    messageContainer.appendChild(messageDiv);
+
+                    chatBotMessages.appendChild(messageContainer);
+
+                    createYouTubePlayer();
+                }
+
+                function getBotResponse(userMessage) {
+                    const responses = {
+                      'help': { message: 'You can contribute to rainforest relief efforts in various ways:<br><br>1. Support reputable rainforest conservation organizations through donations.<br>2. Raise awareness about deforestation and its impact on rainforests.<br>3. Adopt sustainable practices in your lifestyle to reduce your ecological footprint.<br>4. Participate in tree-planting initiatives and local conservation projects.<br>5. Educate others about the importance of rainforests and biodiversity.<br>6. Choose sustainably sourced products to discourage deforestation.<br>7. Get involved in community events and activities focused on rainforest conservation.' },
+                        'rainforest': { message: 'Rainforests are lush and biodiverse ecosystems characterized by high annual rainfall and consistently warm temperatures. They are home to a wide variety of plant and animal species, many of which are not found anywhere else on Earth.' },
+                        'climate': { message: 'Rainforests have a tropical climate with high temperatures and abundant rainfall throughout the year. The combination of warmth and moisture creates ideal conditions for the growth of diverse flora and supports a complex food web.' },
+                        'biodiversity': { message: 'Rainforests are known for their incredible biodiversity. They house a vast array of species, from insects to mammals, and a rich variety of plants. The interconnectedness of these species contributes to the overall health and resilience of the rainforest ecosystem.' },
+                        'flora': { message: 'Rainforest flora includes a diverse range of plant species, such as towering trees, vibrant orchids, and unique ferns. The dense vegetation creates multiple layers, from the forest floor to the canopy, providing habitats for different organisms.' },
+                        'fauna': { message: 'Rainforest fauna is characterized by a multitude of species, including colorful birds, primates, big cats, amphibians, and insects. Many animals have adapted to life in the trees, while others thrive on the forest floor.' },
+                        'canopy': { message: 'The canopy, or uppermost layer of the rainforest, is a critical habitat for many species. It receives the most sunlight and is home to a diverse array of birds, insects, and mammals. Some species never descend to the forest floor.' },
+                        'deforestation': { message: 'Deforestation poses a significant threat to rainforests. Human activities, such as logging and clearing land for agriculture, contribute to the loss of these valuable ecosystems. Conservation efforts are essential to protect rainforests and their inhabitants.' },
+                        'indigenous cultures': { message: 'Indigenous cultures often inhabit rainforest regions and have coexisted with these ecosystems for generations. Their traditional knowledge contributes to sustainable practices and the preservation of biodiversity.' },
+                        'medicinal plants': { message: 'Rainforests are a source of many medicinal plants. Indigenous communities have long utilized the diverse flora for traditional medicine. Preserving rainforests is crucial not only for biodiversity but also for potential medical discoveries.' },
+                        'rainforest exploration': { message: 'Exploring rainforests reveals the wonders of these complex ecosystems. Scientists study rainforests to understand their role in global climate regulation, the discovery of new species, and the potential benefits for human well-being.' },
+                        'ecosystem importance': { message: 'Rainforests play a vital role in maintaining Earth\'s ecological balance. They contribute to climate regulation, provide habitat for numerous species, and support indigenous cultures. Preserving rainforests is crucial for the well-being of the planet.' },
+                        'research conservation': { message: 'Ongoing research and conservation efforts are essential to safeguard rainforests. Scientists work to understand the dynamics of rainforest ecosystems, identify new species, and develop strategies for sustainable resource management.' },
+                        'climate change': { message: 'Rainforests are affected by climate change, which can alter precipitation patterns and temperature. Conservation initiatives aim to mitigate the impacts of climate change on rainforest ecosystems and the species that inhabit them.' }
+                    };
+
+                    for (const keyword in responses) {
+                        if (userMessage.toLowerCase().includes(keyword)) {
+                            return responses[keyword];
+                        }
+                    }
+
+                    return { message: "I'm sorry, I don't have information about that. Ask me something else about Rainforests." };
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
